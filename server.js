@@ -59,10 +59,10 @@ app.post('/api/generate-qr', async (req, res) => {
         };
 
         const qrCodeDataURL = await QRCode.toDataURL(text, options);
-        
+
         // Generate unique ID for this QR code
         const qrId = generateQRId(text);
-        
+
         // Initialize analytics for this QR code if it doesn't exist
         if (!qrCodeAnalytics.has(qrId)) {
             qrCodeAnalytics.set(qrId, {
@@ -155,7 +155,7 @@ app.post('/api/track-scan', async (req, res) => {
 app.get('/api/analytics/:qrId', async (req, res) => {
     try {
         const { qrId } = req.params;
-        
+
         if (!qrCodeAnalytics.has(qrId)) {
             return res.status(404).json({ error: 'QR code not found' });
         }
@@ -230,20 +230,20 @@ app.post('/api/generate-qr-format', async (req, res) => {
                 contentType = 'image/png';
                 filename = `qr-code-${Date.now()}.png`;
                 break;
- 
+
             case 'jpeg':
             case 'jpg':
                 qrCodeData = await QRCode.toDataURL(text, { ...options, type: 'image/jpeg', quality: 0.9 });
                 contentType = 'image/jpeg';
                 filename = `qr-code-${Date.now()}.jpg`;
                 break;
- 
+
             case 'svg':
                 qrCodeData = await QRCode.toString(text, { ...options, type: 'svg' });
                 contentType = 'image/svg+xml';
                 filename = `qr-code-${Date.now()}.svg`;
                 break;
- 
+
             case 'pdf':
                 // For PDF, we'll generate a PNG first and convert to PDF-like data
                 const pngData = await QRCode.toDataURL(text, { ...options, type: 'image/png' });
@@ -251,7 +251,7 @@ app.post('/api/generate-qr-format', async (req, res) => {
                 contentType = 'application/pdf';
                 filename = `qr-code-${Date.now()}.pdf`;
                 break;
- 
+
             default:
                 return res.status(400).json({ error: 'Unsupported format. Use: png, jpeg, svg, or pdf' });
         }
