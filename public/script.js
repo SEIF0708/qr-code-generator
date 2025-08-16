@@ -3,6 +3,7 @@ class QRCodeGenerator {
         this.initializeElements();
         this.bindEvents();
         this.currentQRCode = null;
+        this.currentQRId = null;
         this.apiBaseUrl = window.location.origin; // Will work for both local and deployed
     }
 
@@ -16,6 +17,12 @@ class QRCodeGenerator {
         this.qrPlaceholder = document.getElementById('qr-placeholder');
         this.qrResult = document.getElementById('qr-result');
         this.qrImage = document.getElementById('qr-image');
+        this.analyticsSection = document.getElementById('analytics-section');
+        this.scanCount = document.getElementById('scan-count');
+        this.firstGenerated = document.getElementById('first-generated');
+        this.lastScanned = document.getElementById('last-scanned');
+        this.refreshAnalyticsBtn = document.getElementById('refresh-analytics-btn');
+        this.testScanBtn = document.getElementById('test-scan-btn');
         this.actionButtons = document.getElementById('action-buttons');
         this.downloadFormat = document.getElementById('download-format');
         this.downloadBtn = document.getElementById('download-btn');
@@ -29,6 +36,8 @@ class QRCodeGenerator {
         this.downloadBtn.addEventListener('click', () => this.downloadQRCode());
         this.copyBtn.addEventListener('click', () => this.copyQRCode());
         this.shareBtn.addEventListener('click', () => this.shareQRCode());
+        this.refreshAnalyticsBtn.addEventListener('click', () => this.refreshAnalytics());
+        this.testScanBtn.addEventListener('click', () => this.simulateScan());
         
         // Auto-generate on Enter key
         this.qrText.addEventListener('keypress', (e) => {
@@ -100,7 +109,11 @@ class QRCodeGenerator {
             const data = await response.json();
             
             if (data.success) {
+                // Store QR ID for analytics
+                this.currentQRId = data.qrId;
+                
                 // Display the QR code
+                this.qrImage.src = data.qrCode;
                 this.qrImage.src = data.qrCode;
                 this.qrImage.alt = `QR Code for: ${text}`;
                 
@@ -108,6 +121,10 @@ class QRCodeGenerator {
                 this.qrPlaceholder.classList.add('hidden');
                 this.qrResult.classList.remove('hidden');
                 this.actionButtons.classList.remove('hidden');
+                this.analyticsSection.classList.remove('hidden');
+
+                // Update analytics display
+                this.updateAnalyticsDisplay(data.analytics);
 
                 this.showToast('QR Code generated successfully!', 'success');
             } else {
@@ -119,6 +136,99 @@ class QRCodeGenerator {
             this.showToast(`Error: ${error.message}`, 'error');
         } finally {
             this.setLoading(false);
+        }
+    }
+
+    updateAnalyticsDisplay(analytics) {
+        if (analytics) {
+            this.scanCount.textContent = analytics.scans || 0;
+            this.firstGenerated.textContent = this.formatDate(analytics.firstGenerated);
+            this.lastScanned.textContent = analytics.lastScanned ? this.formatDate(analytics.lastScanned) : 'Never';
+        }
+    }
+
+    formatDate(dateString) {
+        if (!dateString) return '-';
+        const date = new Date(dateString);
+        return date.toLocaleDateString() + ' ' + date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async refreshAnalytics() {
+        if (!this.currentQRId) {
+            this.showToast('No QR code to refresh analytics for', 'error');
+            return;
+        }
+
+        try {
+            this.refreshAnalyticsBtn.disabled = true;
+            this.refreshAnalyticsBtn.innerHTML = '<span>⏳</span> Refreshing...';
+
+            const response = await fetch(`${this.apiBaseUrl}/api/analytics/${this.currentQRId}`);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                this.updateAnalyticsDisplay(data.analytics);
+                this.showToast('Analytics refreshed!', 'success');
+            } else {
+                throw new Error(data.error || 'Failed to refresh analytics');
+            }
+
+        } catch (error) {
+            console.error('Error refreshing analytics:', error);
+            this.showToast(`Failed to refresh analytics: ${error.message}`, 'error');
+        } finally {
+            this.refreshAnalyticsBtn.disabled = false;
+            this.refreshAnalyticsBtn.innerHTML = '<span>🔄</span> Refresh Analytics';
+        }
+    }
+
+    async simulateScan() {
+        if (!this.currentQRId) {
+            this.showToast('No QR code to simulate scan for', 'error');
+            return;
+        }
+
+        try {
+            this.testScanBtn.disabled = true;
+            this.testScanBtn.innerHTML = '<span>⏳</span> Simulating...';
+
+            const response = await fetch(`${this.apiBaseUrl}/api/track-scan`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    qrId: this.currentQRId
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update scan count immediately
+                this.scanCount.textContent = data.scans;
+                this.lastScanned.textContent = this.formatDate(data.lastScanned);
+                
+                this.showToast(`Scan simulated! Total scans: ${data.scans}`, 'success');
+            } else {
+                throw new Error(data.error || 'Failed to simulate scan');
+            }
+
+        } catch (error) {
+            console.error('Error simulating scan:', error);
+            this.showToast(`Failed to simulate scan: ${error.message}`, 'error');
+        } finally {
+            this.testScanBtn.disabled = false;
+            this.testScanBtn.innerHTML = '<span>📱</span> Test Scan (Simulate)';
         }
     }
 

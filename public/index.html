@@ -75,6 +75,36 @@
                     </div>
                 </div>
 
+                <!-- Analytics Section -->
+                <div id="analytics-section" class="analytics-section hidden">
+                    <h3 class="analytics-title">📊 QR Code Analytics</h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-icon">👁️</div>
+                            <div class="analytics-value" id="scan-count">0</div>
+                            <div class="analytics-label">Total Scans</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-icon">📅</div>
+                            <div class="analytics-value" id="first-generated">-</div>
+                            <div class="analytics-label">First Generated</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-icon">🕒</div>
+                            <div class="analytics-value" id="last-scanned">-</div>
+                            <div class="analytics-label">Last Scanned</div>
+                        </div>
+                    </div>
+                    <div class="analytics-actions">
+                        <button id="refresh-analytics-btn" class="action-btn analytics-btn">
+                            <span>🔄</span> Refresh Analytics
+                        </button>
+                        <button id="test-scan-btn" class="action-btn test-btn">
+                            <span>📱</span> Test Scan (Simulate)
+                        </button>
+                    </div>
+                </div>
+
                 <div class="action-buttons hidden" id="action-buttons">
                     <div class="download-section">
                         <label for="download-format" class="label">Download Format</label>
@@ -88,7 +118,7 @@
                             <span>📥</span> Download
                         </button>
                     </div>
-                    
+ 
                     <div class="other-actions">
                         <button id="copy-btn" class="action-btn copy-btn">
                             <span>📋</span> Copy

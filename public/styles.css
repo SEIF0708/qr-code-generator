@@ -259,6 +259,94 @@ body {
     box-shadow: 0 15px 35px var(--shadow);
 }
 
+/* Analytics Section Styles */
+.analytics-section {
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.analytics-title {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+}
+
+.analytics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.analytics-card {
+    text-align: center;
+    padding: 1rem;
+    background: var(--surface);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+.analytics-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.analytics-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary);
+    margin-bottom: 0.25rem;
+}
+
+.analytics-label {
+    font-size: 0.8rem;
+    color: var(--subtext);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.analytics-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.analytics-btn {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: white;
+}
+
+.analytics-btn:hover {
+    background: #2563EB;
+    border-color: #2563EB;
+}
+
+.test-btn {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.test-btn:hover {
+    background: #059669;
+    border-color: #059669;
+}
+
 .action-buttons {
     display: flex;
     flex-direction: column;
@@ -406,6 +494,16 @@ body {
     
     .options-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .analytics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .analytics-actions {
+        flex-direction: column;
+        width: 100%;
     }
     
     .action-buttons {
