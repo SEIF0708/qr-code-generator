@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Professional QR Code Generator with advanced customization options">
+    <meta name="keywords" content="QR code, generator, custom, professional">
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">QR Code Generator Pro</h1>
+            <p class="subtitle">Generate professional QR codes with advanced customization</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="qr-text" class="label">Enter URL or Text</label>
+                    <input type="text" id="qr-text" class="input" placeholder="https://example.com or any text..."
+                        autocomplete="off">
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-group">
+                        <label for="qr-size" class="label">Size</label>
+                        <select id="qr-size" class="select">
+                            <option value="200">200x200</option>
+                            <option value="300" selected>300x300</option>
+                            <option value="400">400x400</option>
+                            <option value="500">500x500</option>
+                        </select>
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-color" class="label">QR Color</label>
+                        <input type="color" id="qr-color" class="color-picker" value="#000000">
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-bg" class="label">Background</label>
+                        <input type="color" id="qr-bg" class="color-picker" value="#FFFFFF">
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-error" class="label">Error Correction</label>
+                        <select id="qr-error" class="select">
+                            <option value="L">Low (7%)</option>
+                            <option value="M" selected>Medium (15%)</option>
+                            <option value="Q">Quartile (25%)</option>
+                            <option value="H">High (30%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="generate-btn">
+                    <span class="btn-text">Generate QR Code</span>
+                    <div class="btn-loader hidden"></div>
+                </button>
+            </div>
+
+            <div class="output-section">
+                <div class="qr-container">
+                    <div id="qr-placeholder" class="qr-placeholder">
+                        <div class="placeholder-icon">📱</div>
+                        <p>Your QR code will appear here</p>
+                    </div>
+                    <div id="qr-result" class="qr-result hidden">
+                        <img id="qr-image" class="qr-image" alt="Generated QR Code">
+                    </div>
+                </div>
+
+                <div class="action-buttons hidden" id="action-buttons">
+                    <button id="download-png-btn" class="action-btn download-btn">
+                        <span>📥</span> Download PNG
+                    </button>
+                    <button id="download-svg-btn" class="action-btn download-btn">
+                        <span>📥</span> Download SVG
+                    </button>
+                    <button id="copy-btn" class="action-btn copy-btn">
+                        <span>📋</span> Copy
+                    </button>
+                    <button id="share-btn" class="action-btn share-btn">
+                        <span>🔗</span> Share
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Built with modern web technologies • Generate QR codes for any purpose</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
