@@ -38,7 +38,7 @@ class QRCodeGenerator {
         this.shareBtn.addEventListener('click', () => this.shareQRCode());
         this.refreshAnalyticsBtn.addEventListener('click', () => this.refreshAnalytics());
         this.testScanBtn.addEventListener('click', () => this.simulateScan());
-        
+
         // Auto-generate on Enter key
         this.qrText.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -77,7 +77,7 @@ class QRCodeGenerator {
 
     async generateQRCode() {
         const text = this.qrText.value.trim();
-        
+
         if (!text) {
             this.showToast('Please enter some text or URL', 'error');
             return;
@@ -107,16 +107,16 @@ class QRCodeGenerator {
             }
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Store QR ID for analytics
                 this.currentQRId = data.qrId;
-                
+
                 // Display the QR code
                 this.qrImage.src = data.qrCode;
                 this.qrImage.src = data.qrCode;
                 this.qrImage.alt = `QR Code for: ${text}`;
-                
+
                 // Hide placeholder and show result
                 this.qrPlaceholder.classList.add('hidden');
                 this.qrResult.classList.remove('hidden');
@@ -164,13 +164,13 @@ class QRCodeGenerator {
             this.refreshAnalyticsBtn.innerHTML = '<span>⏳</span> Refreshing...';
 
             const response = await fetch(`${this.apiBaseUrl}/api/analytics/${this.currentQRId}`);
-            
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
-            
+
             if (data.success) {
                 this.updateAnalyticsDisplay(data.analytics);
                 this.showToast('Analytics refreshed!', 'success');
@@ -212,12 +212,12 @@ class QRCodeGenerator {
             }
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Update scan count immediately
                 this.scanCount.textContent = data.scans;
                 this.lastScanned.textContent = this.formatDate(data.lastScanned);
-                
+
                 this.showToast(`Scan simulated! Total scans: ${data.scans}`, 'success');
             } else {
                 throw new Error(data.error || 'Failed to simulate scan');
@@ -235,7 +235,7 @@ class QRCodeGenerator {
     setLoading(loading) {
         const btnText = this.generateBtn.querySelector('.btn-text');
         const btnLoader = this.generateBtn.querySelector('.btn-loader');
-        
+
         if (loading) {
             btnText.style.opacity = '0';
             btnLoader.classList.remove('hidden');
@@ -250,7 +250,7 @@ class QRCodeGenerator {
     async downloadQRCode() {
         const text = this.qrText.value.trim();
         const format = this.downloadFormat.value;
-        
+
         if (!text) {
             this.showToast('Please generate a QR code first', 'error');
             return;
@@ -280,7 +280,7 @@ class QRCodeGenerator {
             }
 
             const data = await response.json();
-            
+
             if (data.success) {
                 // Create download link
                 const link = document.createElement('a');
@@ -306,7 +306,7 @@ class QRCodeGenerator {
 
     async copyQRCode() {
         const text = this.qrText.value.trim();
-        
+
         if (!text) {
             this.showToast('Please generate a QR code first', 'error');
             return;
@@ -317,30 +317,30 @@ class QRCodeGenerator {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
-            
+
             img.onload = async () => {
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
-                
+
                 try {
                     const blob = await new Promise(resolve => {
                         canvas.toBlob(resolve, 'image/png');
                     });
-                    
+
                     await navigator.clipboard.write([
                         new ClipboardItem({
                             'image/png': blob
                         })
                     ]);
-                    
+
                     this.showToast('QR Code copied to clipboard!', 'success');
                 } catch (clipboardError) {
                     console.error('Clipboard error:', clipboardError);
                     this.showToast('Failed to copy to clipboard', 'error');
                 }
             };
-            
+
             img.src = this.qrImage.src;
         } catch (error) {
             console.error('Error copying QR code:', error);
@@ -350,7 +350,7 @@ class QRCodeGenerator {
 
     async shareQRCode() {
         const text = this.qrText.value.trim();
-        
+
         if (!text) {
             this.showToast('Please generate a QR code first', 'error');
             return;
@@ -366,32 +366,32 @@ class QRCodeGenerator {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
-            
+
             img.onload = async () => {
                 canvas.width = img.width;
                 canvas.height = img.height;
                 ctx.drawImage(img, 0, 0);
-                
+
                 try {
                     const blob = await new Promise(resolve => {
                         canvas.toBlob(resolve, 'image/png');
                     });
-                    
+
                     const file = new File([blob], 'qr-code.png', { type: 'image/png' });
-                    
+
                     await navigator.share({
                         title: 'QR Code',
                         text: `Check out this QR code I generated for: ${text}`,
                         files: [file]
                     });
-                    
+
                     this.showToast('QR Code shared successfully!', 'success');
                 } catch (shareError) {
                     console.error('Share error:', shareError);
                     this.showToast('Failed to share QR code', 'error');
                 }
             };
-            
+
             img.src = this.qrImage.src;
         } catch (error) {
             console.error('Error sharing QR code:', error);
@@ -403,7 +403,7 @@ class QRCodeGenerator {
         this.toast.textContent = message;
         this.toast.className = `toast ${type}`;
         this.toast.classList.remove('hidden');
-        
+
         // Add show class for animation
         setTimeout(() => {
             this.toast.classList.add('show');
@@ -422,7 +422,7 @@ class QRCodeGenerator {
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     new QRCodeGenerator();
-    
+
     // Add some nice micro-interactions
     addMicroInteractions();
 });
@@ -434,7 +434,7 @@ function addMicroInteractions() {
         input.addEventListener('mouseenter', () => {
             input.style.transform = 'scale(1.02)';
         });
-        
+
         input.addEventListener('mouseleave', () => {
             input.style.transform = 'scale(1)';
         });
@@ -449,14 +449,14 @@ function addMicroInteractions() {
             const size = Math.max(rect.width, rect.height);
             const x = e.clientX - rect.left - size / 2;
             const y = e.clientY - rect.top - size / 2;
-            
+
             ripple.style.width = ripple.style.height = size + 'px';
             ripple.style.left = x + 'px';
             ripple.style.top = y + 'px';
             ripple.classList.add('ripple');
-            
+
             button.appendChild(ripple);
-            
+
             setTimeout(() => {
                 ripple.remove();
             }, 600);

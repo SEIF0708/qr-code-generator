@@ -482,54 +482,54 @@ body {
     .container {
         padding: 1rem;
     }
-    
+
     .main-content {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-    
+
     .title {
         font-size: 2rem;
     }
-    
+
     .options-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .analytics-grid {
         grid-template-columns: 1fr;
         gap: 0.75rem;
     }
-    
+
     .analytics-actions {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .action-buttons {
         width: 100%;
     }
-    
+
     .download-section {
         width: 100%;
     }
-    
+
     .other-actions {
         flex-direction: column;
         width: 100%;
     }
-    
+
     .action-btn {
         width: 100%;
         justify-content: center;
     }
-    
+
     .toast {
         right: 1rem;
         left: 1rem;
         transform: translateY(-100px);
     }
-    
+
     .toast.show {
         transform: translateY(0);
     }
