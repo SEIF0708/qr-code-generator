@@ -261,9 +261,38 @@ body {
 
 .action-buttons {
     display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.download-section {
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    flex-wrap: wrap;
+    align-items: center;
+    padding: 1.5rem;
+    background: var(--background);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+}
+
+.download-section .label {
+    margin-bottom: 0.5rem;
+    text-align: center;
+}
+
+.download-section .select {
+    width: 100%;
+    max-width: 250px;
+}
+
+.other-actions {
+    display: flex;
+    gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .action-btn {
@@ -286,6 +315,12 @@ body {
     border-color: var(--secondary);
     background: var(--surface);
     transform: translateY(-1px);
+}
+
+.download-btn {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
 }
 
 .download-btn:hover {
@@ -359,36 +394,44 @@ body {
     .container {
         padding: 1rem;
     }
-
+    
     .main-content {
         grid-template-columns: 1fr;
         gap: 2rem;
     }
-
+    
     .title {
         font-size: 2rem;
     }
-
+    
     .options-grid {
         grid-template-columns: 1fr;
     }
-
+    
     .action-buttons {
+        width: 100%;
+    }
+    
+    .download-section {
+        width: 100%;
+    }
+    
+    .other-actions {
         flex-direction: column;
         width: 100%;
     }
-
+    
     .action-btn {
         width: 100%;
         justify-content: center;
     }
-
+    
     .toast {
         right: 1rem;
         left: 1rem;
         transform: translateY(-100px);
     }
-
+    
     .toast.show {
         transform: translateY(0);
     }

@@ -76,18 +76,27 @@
                 </div>
 
                 <div class="action-buttons hidden" id="action-buttons">
-                    <button id="download-png-btn" class="action-btn download-btn">
-                        <span>📥</span> Download PNG
-                    </button>
-                    <button id="download-svg-btn" class="action-btn download-btn">
-                        <span>📥</span> Download SVG
-                    </button>
-                    <button id="copy-btn" class="action-btn copy-btn">
-                        <span>📋</span> Copy
-                    </button>
-                    <button id="share-btn" class="action-btn share-btn">
-                        <span>🔗</span> Share
-                    </button>
+                    <div class="download-section">
+                        <label for="download-format" class="label">Download Format</label>
+                        <select id="download-format" class="select">
+                            <option value="png">PNG (High Quality)</option>
+                            <option value="jpeg">JPEG (Compressed)</option>
+                            <option value="svg">SVG (Vector)</option>
+                            <option value="pdf">PDF (Document)</option>
+                        </select>
+                        <button id="download-btn" class="action-btn download-btn">
+                            <span>📥</span> Download
+                        </button>
+                    </div>
+                    
+                    <div class="other-actions">
+                        <button id="copy-btn" class="action-btn copy-btn">
+                            <span>📋</span> Copy
+                        </button>
+                        <button id="share-btn" class="action-btn share-btn">
+                            <span>🔗</span> Share
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>

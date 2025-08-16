@@ -76,6 +76,85 @@ app.post('/api/generate-qr', async (req, res) => {
     }
 });
 
+// Generate QR code in specific format
+app.post('/api/generate-qr-format', async (req, res) => {
+    console.log('QR format generation request received:', req.body);
+    try {
+        const { text, size = 300, color = '#000000', backgroundColor = '#FFFFFF', errorCorrection = 'M', format = 'png' } = req.body;
+
+        if (!text || text.trim() === '') {
+            return res.status(400).json({ error: 'Text is required' });
+        }
+
+        let qrCodeData;
+        let contentType;
+        let filename;
+
+        const options = {
+            width: parseInt(size),
+            height: parseInt(size),
+            color: {
+                dark: color,
+                light: backgroundColor
+            },
+            errorCorrectionLevel: errorCorrection,
+            margin: 2
+        };
+
+        switch (format.toLowerCase()) {
+            case 'png':
+                qrCodeData = await QRCode.toDataURL(text, { ...options, type: 'image/png' });
+                contentType = 'image/png';
+                filename = `qr-code-${Date.now()}.png`;
+                break;
+            
+            case 'jpeg':
+            case 'jpg':
+                qrCodeData = await QRCode.toDataURL(text, { ...options, type: 'image/jpeg', quality: 0.9 });
+                contentType = 'image/jpeg';
+                filename = `qr-code-${Date.now()}.jpg`;
+                break;
+            
+            case 'svg':
+                qrCodeData = await QRCode.toString(text, { ...options, type: 'svg' });
+                contentType = 'image/svg+xml';
+                filename = `qr-code-${Date.now()}.svg`;
+                break;
+            
+            case 'pdf':
+                // For PDF, we'll generate a PNG first and convert to PDF-like data
+                const pngData = await QRCode.toDataURL(text, { ...options, type: 'image/png' });
+                qrCodeData = pngData;
+                contentType = 'application/pdf';
+                filename = `qr-code-${Date.now()}.pdf`;
+                break;
+            
+            default:
+                return res.status(400).json({ error: 'Unsupported format. Use: png, jpeg, svg, or pdf' });
+        }
+
+        res.json({
+            success: true,
+            qrCode: qrCodeData,
+            format: format,
+            contentType: contentType,
+            filename: filename,
+            text: text,
+            size: size,
+            color: color,
+            backgroundColor: backgroundColor,
+            errorCorrection: errorCorrection
+        });
+
+    } catch (error) {
+        console.error('Error generating QR code in format:', error);
+        res.status(500).json({
+            error: 'Failed to generate QR code in specified format',
+            details: error.message
+        });
+    }
+});
+
 app.post('/api/generate-qr-svg', async (req, res) => {
     console.log('SVG QR generation request received:', req.body);
     try {
