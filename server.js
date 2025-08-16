@@ -24,11 +24,18 @@ app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
+// Request logging middleware
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+});
+
 // Serve static files from the public directory
 app.use(express.static(path.join(__dirname, 'public')));
 
 // API Routes
 app.post('/api/generate-qr', async (req, res) => {
+    console.log('QR generation request received:', req.body);
     try {
         const { text, size = 300, color = '#000000', backgroundColor = '#FFFFFF', errorCorrection = 'M' } = req.body;
 
@@ -70,6 +77,7 @@ app.post('/api/generate-qr', async (req, res) => {
 });
 
 app.post('/api/generate-qr-svg', async (req, res) => {
+    console.log('SVG QR generation request received:', req.body);
     try {
         const { text, size = 300, color = '#000000', backgroundColor = '#FFFFFF', errorCorrection = 'M' } = req.body;
 
@@ -112,11 +120,6 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Serve the main HTML file for all other routes (SPA support)
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error('Unhandled error:', err);
@@ -124,6 +127,11 @@ app.use((err, req, res, next) => {
         error: 'Internal server error',
         message: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
     });
+});
+
+// Serve the main HTML file for all other routes (SPA support) - MUST BE LAST
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
