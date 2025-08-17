@@ -94,7 +94,7 @@ class QRCodeGenerator {
                 errorCorrection: this.qrError.value
             };
 
-            const response = await fetch(`${this.apiBaseUrl}/api/generate-qr`, {
+            const response = await fetch('/api/generate-qr', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

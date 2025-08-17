@@ -9,12 +9,79 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <meta name="description" content="Professional QR Code Generator with advanced customization options">
     <meta name="keywords" content="QR code, generator, custom, professional">
+    <style>
+        .animated-headline {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 32px 0 24px 0;
+            background: linear-gradient(90deg, #007cf0 0%, #00dfd8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.95);
+            animation: headlineFadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .animated-headline span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: wordFadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .animated-headline .qr {
+            animation-delay: 0.2s;
+        }
+
+        .animated-headline .code {
+            animation-delay: 0.4s;
+        }
+
+        .animated-headline .gen {
+            animation-delay: 0.6s;
+        }
+
+        .animated-headline .and {
+            animation-delay: 0.8s;
+        }
+
+        .animated-headline .analytics {
+            animation-delay: 1s;
+        }
+
+        @keyframes headlineFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes wordFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
         <header class="header">
-            <h1 class="title">QR Code Generator Pro</h1>
+            <!-- Old headline -->
+            <!-- <h1 class="headline">QR Code Generator & Analytics</h1> -->
+
+            <!-- New animated headline -->
+            <h1 class="headline animated-headline">
+                <span class="qr">QR</span> <span class="code">Code</span> <span class="gen">Generator</span> <span
+                    class="and">&amp;</span> <span class="analytics">Analytics</span>
+            </h1>
             <p class="subtitle">Generate professional QR codes with advanced customization</p>
         </header>
 
