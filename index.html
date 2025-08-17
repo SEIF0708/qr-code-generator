@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator Pro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="description" content="Professional QR Code Generator with advanced customization options">
+    <meta name="keywords" content="QR code, generator, custom, professional">
+    <style>
+        .animated-headline {
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-align: center;
+            margin: 32px 0 24px 0;
+            background: linear-gradient(90deg, #007cf0 0%, #00dfd8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(-30px) scale(0.95);
+            animation: headlineFadeIn 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .animated-headline span {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            animation: wordFadeIn 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .animated-headline .qr {
+            animation-delay: 0.2s;
+        }
+
+        .animated-headline .code {
+            animation-delay: 0.4s;
+        }
+
+        .animated-headline .gen {
+            animation-delay: 0.6s;
+        }
+
+        .animated-headline .and {
+            animation-delay: 0.8s;
+        }
+
+        .animated-headline .analytics {
+            animation-delay: 1s;
+        }
+
+        @keyframes headlineFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes wordFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="header">
+            <!-- Old headline -->
+            <!-- <h1 class="headline">QR Code Generator & Analytics</h1> -->
+
+            <!-- New animated headline -->
+            <h1 class="headline animated-headline">
+                <span class="qr">QR</span> <span class="code">Code</span> <span class="gen">Generator</span> <span
+                    class="and">&amp;</span> <span class="analytics">Analytics</span>
+            </h1>
+            <p class="subtitle">Generate professional QR codes with advanced customization</p>
+        </header>
+
+        <main class="main-content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label for="qr-text" class="label">Enter URL or Text</label>
+                    <input type="text" id="qr-text" class="input" placeholder="https://example.com or any text..."
+                        autocomplete="off">
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-group">
+                        <label for="qr-size" class="label">Size</label>
+                        <select id="qr-size" class="select">
+                            <option value="200">200x200</option>
+                            <option value="300" selected>300x300</option>
+                            <option value="400">400x400</option>
+                            <option value="500">500x500</option>
+                        </select>
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-color" class="label">QR Color</label>
+                        <input type="color" id="qr-color" class="color-picker" value="#000000">
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-bg" class="label">Background</label>
+                        <input type="color" id="qr-bg" class="color-picker" value="#FFFFFF">
+                    </div>
+
+                    <div class="option-group">
+                        <label for="qr-error" class="label">Error Correction</label>
+                        <select id="qr-error" class="select">
+                            <option value="L">Low (7%)</option>
+                            <option value="M" selected>Medium (15%)</option>
+                            <option value="Q">Quartile (25%)</option>
+                            <option value="H">High (30%)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button id="generate-btn" class="generate-btn">
+                    <span class="btn-text">Generate QR Code</span>
+                    <div class="btn-loader hidden"></div>
+                </button>
+            </div>
+
+            <div class="output-section">
+                <div class="qr-container">
+                    <div id="qr-placeholder" class="qr-placeholder">
+                        <div class="placeholder-icon">📱</div>
+                        <p>Your QR code will appear here</p>
+                    </div>
+                    <div id="qr-result" class="qr-result hidden">
+                        <img id="qr-image" class="qr-image" alt="Generated QR Code">
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div id="analytics-section" class="analytics-section hidden">
+                    <h3 class="analytics-title">📊 QR Code Analytics</h3>
+                    <div class="analytics-grid">
+                        <div class="analytics-card">
+                            <div class="analytics-icon">👁️</div>
+                            <div class="analytics-value" id="scan-count">0</div>
+                            <div class="analytics-label">Total Scans</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-icon">📅</div>
+                            <div class="analytics-value" id="first-generated">-</div>
+                            <div class="analytics-label">First Generated</div>
+                        </div>
+                        <div class="analytics-card">
+                            <div class="analytics-icon">🕒</div>
+                            <div class="analytics-value" id="last-scanned">-</div>
+                            <div class="analytics-label">Last Scanned</div>
+                        </div>
+                    </div>
+                    <div class="analytics-actions">
+                        <button id="refresh-analytics-btn" class="action-btn analytics-btn">
+                            <span>🔄</span> Refresh Analytics
+                        </button>
+                        <button id="test-scan-btn" class="action-btn test-btn">
+                            <span>📱</span> Test Scan (Simulate)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="action-buttons hidden" id="action-buttons">
+                    <div class="download-section">
+                        <label for="download-format" class="label">Download Format</label>
+                        <select id="download-format" class="select">
+                            <option value="png">PNG (High Quality)</option>
+                            <option value="jpeg">JPEG (Compressed)</option>
+                            <option value="svg">SVG (Vector)</option>
+                            <option value="pdf">PDF (Document)</option>
+                        </select>
+                        <button id="download-btn" class="action-btn download-btn">
+                            <span>📥</span> Download
+                        </button>
+                    </div>
+
+                    <div class="other-actions">
+                        <button id="copy-btn" class="action-btn copy-btn">
+                            <span>📋</span> Copy
+                        </button>
+                        <button id="share-btn" class="action-btn share-btn">
+                            <span>🔗</span> Share
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>Built with modern web technologies • Generate QR codes for any purpose</p>
+        </footer>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
