@@ -43,5 +43,3 @@ self.addEventListener('activate', (event) => {
         })
     );
 });
-
-node.server.js
